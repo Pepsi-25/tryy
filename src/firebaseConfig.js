@@ -1,21 +1,17 @@
-// src/firebaseConfig.js
-
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getDatabase } from "firebase/database";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// 🚨🚨🚨 هام جداً: استبدل هذه القيم بقيم مشروعك الفعلية من Firebase Console 🚨🚨🚨
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY_HERE",
-  authDomain: "YOUR-PROJECT-ID.firebaseapp.com",
-  databaseURL: "https://YOUR-PROJECT-ID-default-rtdb.firebaseio.com",
-  projectId: "YOUR-PROJECT-ID",
-  storageBucket: "YOUR-PROJECT-ID.appspot.com",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBGMJIAVxZtfEnPlYxZQxOVSLUX4YGlmhs",
+  authDomain: "ppep-6cd6f.firebaseapp.com",
+  projectId: "ppep-6cd6f",
+  storageBucket: "ppep-6cd6f.firebasestorage.app",
+  messagingSenderId: "661866399642",
+  appId: "1:661866399642:web:605b28980a4a63569adc23"
 };
 
-// تهيئة Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const db = getDatabase(app); 
-
-console.log('Firebase initialized. Using Realtime Database for state synchronization.');
