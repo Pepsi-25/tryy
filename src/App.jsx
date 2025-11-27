@@ -168,42 +168,6 @@ export default function NamePlaceAnimalThing() {
     console.log('✅ Room created successfully!'); // للتشخيص
   }
 };
-```
-
----
-
-## 🔍 اختبار إضافي:
-
-### 1️⃣ تأكد من Firebase Console:
-
-- افتح **Firebase Console** → **Realtime Database**
-- لما تعمل غرفة جديدة
-- شوف هل ظهر في البيانات حاجة زي كده:
-```
-games
-  └── ABCD12  (أو أي كود تاني)
-       ├── players: [...]
-       ├── gameStarted: false
-       └── ...
-```
-
-**لو مش ظاهر حاجة** → معناه Firebase مش بيحفظ البيانات أصلاً
-
----
-
-### 2️⃣ اختبار مع Console:
-
-لما تعمل غرفة، شوف في Console:
-```
-🔵 Creating room with code: ABCD12
-🔵 Attempting to save: {...}
-✅ Save successful!
-✅ Room created successfully!
-```
-
-ولما صاحبك يحاول يدخل، شوف:
-```
-🔵 Joining room: ABCD12
 
     const success = await saveGameData(gameData);
     if (success) {
@@ -617,4 +581,5 @@ games
   return null;
 
 }
+
 
