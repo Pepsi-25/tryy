@@ -160,12 +160,20 @@ export default function NamePlaceAnimalThing() {
     gameEnded: false
   };
 
-  console.log('🔵 Creating room with code:', code); // للتشخيص
-  const success = await saveGameData(gameData);
-  if (success) {
+  
+  // استخدم code مباشرة بدل roomCode
+  try {
+    await set(ref(db, `games/${code}`), gameData);
+    
+    // بعد النجاح، اعمل set للـ state
+    setRoomCode(code);
+    setPlayerId(pid);
+    setIsHost(true);
     setPlayers([newPlayer]);
     setScreen('lobby');
-    console.log('✅ Room created successfully!'); // للتشخيص
+  } catch (error) {
+    console.error('Error creating room:', error);
+    alert('Error creating room');
   }
 };
 
@@ -581,5 +589,6 @@ export default function NamePlaceAnimalThing() {
   return null;
 
 }
+
 
 
