@@ -29,15 +29,22 @@ export default function NamePlaceAnimalThing() {
   
   // 1. حفظ حالة اللعبة الرئيسية
   const saveGameData = async (data) => {
-    try {
-      await set(ref(db, `games/${roomCode}`), data);
-      return true;
-    } catch (error) {
-      console.error('Firebase save error:', error);
-      alert('Error saving game data to server.');
-      return false;
-    }
-  };
+  try {
+    console.log('🔵 Attempting to save:', data);
+    console.log('🔵 Room code:', roomCode);
+    console.log('🔵 Database URL:', db.app.options.databaseURL); // تحقق من الرابط
+    
+    await set(ref(db, `games/${roomCode}`), data);
+    console.log('✅ Save successful!');
+    return true;
+  } catch (error) {
+    console.error('❌ Firebase save error:', error);
+    console.error('❌ Error code:', error.code);
+    console.error('❌ Error message:', error.message);
+    alert('Error saving game data to server.');
+    return false;
+  }
+};
 
   // 2. تحميل حالة اللعبة (للاستخدام لمرة واحدة مثل التحقق من وجود الغرفة)
   const loadGameData = async (code) => {
@@ -558,4 +565,5 @@ export default function NamePlaceAnimalThing() {
   }
 
   return null;
+
 }
