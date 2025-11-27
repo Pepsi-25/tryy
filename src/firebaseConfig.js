@@ -7,7 +7,7 @@ const firebaseConfig = {
   // IMPORTANT: Replace these placeholder values with your actual Firebase project settings
   apiKey: "AIzaSyAn25xKxFKTDVsLqm0PesHDRLIWTj3vh3I",
   authDomain: "tryy-5ea43.firebaseapp.com",
-  databaseURL: "https://tryy-5ea43-default-rtdb.firebaseio.com",
+  databaseURL: "https://tryy-5ea43-default-rtdb.firebaseio.com/",
   projectId: "tryy-5ea43",
   storageBucket: "tryy-5ea43.firebasestorage.app",
   messagingSenderId: "259503180304",
@@ -17,5 +17,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
+
 
 
