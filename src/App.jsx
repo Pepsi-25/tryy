@@ -135,30 +135,75 @@ export default function NamePlaceAnimalThing() {
   }, [gameStarted, screen, timeLeft, isHost]);
 
   const createRoom = async () => {
-    if (!playerName.trim()) {
-      alert('Please enter your name');
-      return;
-    }
+  if (!playerName.trim()) {
+    alert('Please enter your name');
+    return;
+  }
 
-    const code = generateRoomCode();
-    const pid = generateId();
-    
-    setRoomCode(code);
-    setPlayerId(pid);
-    setIsHost(true);
+  const code = generateRoomCode();
+  const pid = generateId();
+  
+  setRoomCode(code);
+  setPlayerId(pid);
+  setIsHost(true);
 
-    const newPlayer = {
-      id: pid,
-      name: playerName.trim(),
-      isHost: true
-    };
+  const newPlayer = {
+    id: pid,
+    name: playerName.trim(),
+    isHost: true
+  };
 
-    const gameData = {
-      players: [newPlayer],
-      gameStarted: false,
-      currentLetter: '',
-      gameEnded: false
-    };
+  const gameData = {
+    players: [newPlayer],
+    gameStarted: false,
+    currentLetter: '',
+    gameEnded: false
+  };
+
+  console.log('🔵 Creating room with code:', code); // للتشخيص
+  const success = await saveGameData(gameData);
+  if (success) {
+    setPlayers([newPlayer]);
+    setScreen('lobby');
+    console.log('✅ Room created successfully!'); // للتشخيص
+  }
+};
+```
+
+---
+
+## 🔍 اختبار إضافي:
+
+### 1️⃣ تأكد من Firebase Console:
+
+- افتح **Firebase Console** → **Realtime Database**
+- لما تعمل غرفة جديدة
+- شوف هل ظهر في البيانات حاجة زي كده:
+```
+games
+  └── ABCD12  (أو أي كود تاني)
+       ├── players: [...]
+       ├── gameStarted: false
+       └── ...
+```
+
+**لو مش ظاهر حاجة** → معناه Firebase مش بيحفظ البيانات أصلاً
+
+---
+
+### 2️⃣ اختبار مع Console:
+
+لما تعمل غرفة، شوف في Console:
+```
+🔵 Creating room with code: ABCD12
+🔵 Attempting to save: {...}
+✅ Save successful!
+✅ Room created successfully!
+```
+
+ولما صاحبك يحاول يدخل، شوف:
+```
+🔵 Joining room: ABCD12
 
     const success = await saveGameData(gameData);
     if (success) {
@@ -168,42 +213,47 @@ export default function NamePlaceAnimalThing() {
   };
 
   const joinRoom = async () => {
-    const code = roomCode.trim().toUpperCase();
-    if (!playerName.trim() || !code) {
-      alert('Please enter your name and room code');
-      return;
-    }
+  const code = roomCode.trim().toUpperCase();
+  if (!playerName.trim() || !code) {
+    alert('Please enter your name and room code');
+    return;
+  }
 
-    const data = await loadGameData(code);
-    if (!data) {
-      alert('Room not found');
-      return;
-    }
+  console.log('🔵 Joining room:', code); // للتشخيص
+  
+  const data = await loadGameData(code);
+  
+  console.log('🔵 Room data:', data); // للتشخيص
+  
+  if (!data) {
+    alert('Room not found');
+    console.log('❌ Room not found in database'); // للتشخيص
+    return;
+  }
 
-    if (data.gameStarted) {
-      alert('Game already in progress');
-      return;
-    }
+  if (data.gameStarted) {
+    alert('Game already in progress');
+    return;
+  }
 
-    const pid = generateId();
-    setPlayerId(pid);
-    setRoomCode(code); // تأكيد الكود الكبير
+  const pid = generateId();
+  setPlayerId(pid);
+  setRoomCode(code);
 
-    const newPlayer = {
-      id: pid,
-      name: playerName.trim(),
-      isHost: false
-    };
-
-    const updatedPlayers = [...(data.players || []), newPlayer];
-    
-    // يتم تحديث الغرفة عبر saveGameData (والذي يستخدم set/ref من Firebase)
-    await saveGameData({ ...data, players: updatedPlayers });
-    
-    setPlayers(updatedPlayers);
-    setScreen('lobby');
+  const newPlayer = {
+    id: pid,
+    name: playerName.trim(),
+    isHost: false
   };
 
+  const updatedPlayers = [...(data.players || []), newPlayer];
+  
+  await saveGameData({ ...data, players: updatedPlayers });
+  
+  setPlayers(updatedPlayers);
+  setScreen('lobby');
+  console.log('✅ Joined room successfully!'); // للتشخيص
+};
   const startGame = async () => {
     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const randomLetter = letters[Math.floor(Math.random() * letters.length)];
@@ -567,3 +617,4 @@ export default function NamePlaceAnimalThing() {
   return null;
 
 }
+
